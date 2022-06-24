@@ -1,0 +1,23 @@
+<mat-card class="example-card">
+  <mat-drawer-container class="example-container">
+    <!--<mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Lazzy Loading</mat-card-title>
+
+    </mat-card-header>-->
+    <mat-drawer mode="side" opened>
+
+      <h2>
+      Lazzy Loading
+        </h2>
+     
+      <button routerLink="DealerGroup"> Dealer</button>
+    </mat-drawer>
+
+    <mat-card-actions>
+
+      <router-outlet></router-outlet>
+
+    </mat-card-actions>
+  </mat-drawer-container>
+</mat-card>

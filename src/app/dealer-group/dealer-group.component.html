@@ -1,0 +1,284 @@
+<mat-card class="example-card" *ngIf="showSearchGrid">
+  <section>
+
+    <div class="example-button-row">
+      <button (click)="AddDealer()" mat-button>Add Dealer</button>
+    </div>
+  </section>
+  <div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>S.No.</th>
+          <th>Distributor</th>
+          <th>Code</th>
+          <th>Dealer Name</th>
+          <th>Address</th>
+          <th>Country</th>
+          <th>State/Province</th>
+          <th>City</th>
+          <th>Added On</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pt of DealerData ; let i = index;">
+          <td class="sorting_1">{{ i + 1 }}</td>
+          <td>{{ pt.DistributorName}}</td>
+          <td>{{ pt.DealerCode}}</td>
+          <td>{{ pt.DealerName}}</td>
+          <td>{{ pt.DealerAddress}}</td>
+          <td>{{ pt.CountryName }}</td>
+          <td>
+            {{ pt.StateName }}
+          </td>
+          <td>{{ pt.CityName }}</td>
+          <td>{{ pt.CreationDate | date : 'dd-MMM -yyyy' }}</td>
+          <td>
+            <button (click)="UpdateDealer(pt)" class="btn btn-primary btn-xs">Edit</button>
+            <button class="btn btn-warning btn-xs">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-card>
+
+
+
+
+<mat-card class="example-card" *ngIf="showAddDealer">
+
+
+  <form class="example-form" [formGroup]="AddDealerData" (ngSubmit)="SaveDealer()">
+
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Distributor *</mat-label>
+            <input matInput type="text" formControlName="Distributor">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Dealer Name*</mat-label>
+            <input matInput formControlName="DealerName">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Dealer Code*</mat-label>
+            <input matInput formControlName="DealerCode">
+          </mat-form-field>
+        </td>
+      </tr>
+
+    </table>
+
+    <table>
+      <tr>
+
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Address*</mat-label>
+            <textarea matInput formControlName="Address" placeholder="Ex. 100 Main St">1600 Amphitheatre Pkwy</textarea>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Country*</mat-label>
+            <mat-select formControlName="Country">
+              <mat-option *ngFor="let country of CountryList" (click)="getstate(country.Country_Id)" [value]="country.Country_Id">{{country.CountryName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>State/Province*</mat-label>
+            <mat-select formControlName="StateProvince">
+              <mat-option *ngFor="let state of stateList" (click)="getcity(state.State_Id)" [value]="state.State_Id">{{state.StateName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+
+      </tr>
+    </table>
+
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>City*</mat-label>
+            <mat-select formControlName="City">
+              <mat-option *ngFor="let city of cityList" [value]="city.City_Id">{{city.CityName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+
+        <td>
+          <label>Dealer Logo</label>
+          <br />
+          <input type="file" placeholder="Ex. Image" formControlName="DealerLogo">
+
+        </td>
+
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Contact Person*</mat-label>
+            <input matInput placeholder="Ex. California" formControlName="ContactPerson">
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email *</mat-label>
+            <input matInput placeholder="Ex. California" formControlName="Email">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Contact Number*</mat-label>
+            <input matInput #postalCode maxlength="10" placeholder="Ex. 9410573812" formControlName="ContactNumber">
+
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <section>
+      <div class="example-button-row">
+        <button [disabled]="!AddDealerData.valid" type="submit" mat-raised-button>Submit</button>
+        <button mat-raised-button color="primary">Back</button>
+      </div>
+    </section>
+
+  </form>
+</mat-card>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<mat-card class="example-card" *ngIf="showEditForm">
+
+
+  <form class="example-form" [formGroup]="updateform" (submit)="updateDealerForm()">
+
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Distributor *</mat-label>
+            <input matInput type="text" formControlName="Distributor">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Dealer Name*</mat-label>
+            <input matInput formControlName="DealerName">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Dealer Code*</mat-label>
+            <input matInput formControlName="DealerCode">
+          </mat-form-field>
+        </td>
+      </tr>
+
+    </table>
+
+    <table>
+      <tr>
+
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Address*</mat-label>
+            <textarea matInput formControlName="Address" placeholder="Ex. 100 Main St">1600 Amphitheatre Pkwy</textarea>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>Country*</mat-label>
+            <mat-select formControlName="Country">
+              <mat-option *ngFor="let country of CountryList" (click)="getstate(country.Country_Id)" [value]="country.Country_Id">{{country.CountryName}}</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>State/Province*</mat-label>
+            <mat-select formControlName="StateProvince">
+              <mat-option *ngFor="let state of stateList" (click)="getcity(state.State_Id)" [value]="state.State_Id">{{state.StateName}}</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </td>
+
+      </tr>
+    </table>
+
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field appearance="fill">
+            <mat-label>City*</mat-label>
+            <mat-select formControlName="City">
+              <mat-option *ngFor="let city of cityList" [value]="city.City_Id">{{city.CityName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+
+        <td>
+          <label>Dealer Logo</label>
+          <br />
+          <input type="file" placeholder="Ex. Image" formControlName="DealerLogo">
+
+        </td>
+
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Contact Person*</mat-label>
+            <input matInput placeholder="Ex. California" formControlName="ContactPerson">
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email *</mat-label>
+            <input matInput placeholder="Ex. California" formControlName="Email">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Contact Number*</mat-label>
+            <input matInput #postalCode maxlength="10" placeholder="Ex. 9410573812" formControlName="ContactNumber">
+
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <section>
+      <div class="example-button-row">
+        <button [disabled]="!updateform.valid" type="submit" mat-raised-button>Submit</button>
+        <button mat-raised-button color="primary">Back</button>
+      </div>
+    </section>
+
+  </form>
+</mat-card>
